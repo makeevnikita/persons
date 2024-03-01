@@ -22,7 +22,7 @@ public class PersonController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] long id)
     {
         try
         {
@@ -67,7 +67,7 @@ public class PersonController : ControllerBase
     }
     
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] long id)
     {
         try
         {

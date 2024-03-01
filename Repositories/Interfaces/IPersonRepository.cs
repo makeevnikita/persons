@@ -6,11 +6,11 @@ public interface IPersonRepository
 {
     public Task Create(PersonDto person);
 
-    public Task Delete(int id);
+    public Task Delete(long id);
 
     public Task<List<PersonDto>> GetAll();
 
-    public Task <PersonDto> GetById(int id);
+    public Task <PersonDto> GetById(long id);
 
     public Task Update(long id, PersonDto person);
 }

@@ -31,7 +31,7 @@ public class PersonRepository : IPersonRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task Delete(int id)
+    public async Task Delete(long id)
     {
         // Удаляет Person
 
@@ -62,7 +62,7 @@ public class PersonRepository : IPersonRepository
         return persons;
     }
 
-    public async Task<PersonDto> GetById(int id)
+    public async Task<PersonDto> GetById(long id)
     {
         // Возврщает объект Person и Skill
 
