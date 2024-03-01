@@ -18,7 +18,7 @@ namespace skills
 
         public void ConfigureServices(IServiceCollection services)
         {   
-            services.AddTransient<PersonRepository>();
+            services.AddTransient<IPersonRepository, PersonRepository>();
 
             string connectionString = Configuration.GetConnectionString("PostgresConnection");
             services.AddDbContext<SkillContext>(options =>

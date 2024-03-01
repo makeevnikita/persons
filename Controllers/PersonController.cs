@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Skills.Repositories;
 using Skills.Exceptions;
-using Models.Dto;
-using System.Text.Json;
-using System.Text.Encodings.Web;
+using Skills.Models.Dto;
 
 
 
@@ -13,11 +11,11 @@ namespace skill.Controllers;
 [Route("api/v1/persons")]
 public class PersonController : ControllerBase
 {
-    private readonly PersonRepository _personRepository; 
+    private readonly IPersonRepository _personRepository; 
 
     private readonly ILogger<PersonController> _logger;
     
-    public PersonController(PersonRepository PersonRepository, ILogger<PersonController> logger)
+    public PersonController(IPersonRepository PersonRepository, ILogger<PersonController> logger)
     {
         _personRepository = PersonRepository;
         _logger = logger;
@@ -28,7 +26,7 @@ public class PersonController : ControllerBase
     {
         try
         {
-            PersonDetail person = await _personRepository.GetById(id);
+            PersonDto person = await _personRepository.GetById(id);
 
             if (person == null)
             {
@@ -92,7 +90,7 @@ public class PersonController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePerson person)
+    public async Task<IActionResult> Update([FromRoute] long id, [FromBody] PersonDto person)
     {
         try
         {
@@ -115,7 +113,7 @@ public class PersonController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreatePerson person)
+    public async Task<IActionResult> Create([FromBody] PersonDto person)
     {
         try
         {
