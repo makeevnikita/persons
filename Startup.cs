@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Skills.Models;
 using Skills.Repositories;
 using Microsoft.Extensions;
+using Skills;
 
 
 
@@ -31,6 +32,8 @@ namespace skills
 
         public void Configure(IApplicationBuilder app)
         {   
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
+
             app.UseAuthentication();
             app.UseRouting();
 

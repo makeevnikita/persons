@@ -25,67 +25,23 @@ public class PersonController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] long id)
     {
-        try
-        {
-            PersonDto person = await _personRepository.GetById(id);
+        PersonDto person = await _personRepository.GetById(id);
 
-            if (person == null)
-            {
-                _logger.LogInformation($"Person with id {id} not found");
-
-                return NotFound();
-            }
-            else
-            {
-                return new JsonResult(person);
-            }
-            
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-
-            return StatusCode(500);
-        }
-
+        return new JsonResult(person);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        try
-        {
-            List<PersonDto> persons = await _personRepository.GetAll();
+        List<PersonDto> persons = await _personRepository.GetAll();
 
-            return new JsonResult(persons);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-
-            return StatusCode(500);
-        }
+        return new JsonResult(persons);
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] long id)
     {
-        try
-        {
-            await _personRepository.Delete(id);
-        }
-        catch (NotFoundException ex)
-        {
-            _logger.LogInformation($"Person with id {id} not found");
-
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-
-            return StatusCode(500);
-        }
+        await _personRepository.Delete(id);
 
         return new JsonResult(new { result = "success" });
     }
@@ -93,41 +49,17 @@ public class PersonController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] long id, [FromBody] PersonDto person)
     {
-        try
-        {
-            await _personRepository.Update(id, person);
+        await _personRepository.Update(id, person);
 
-            return new JsonResult(new { result = "success" });
-        }
-        catch (NotFoundException ex)
-        {
-            _logger.LogInformation($"Person with id {id} not found");
-
-            return NotFound();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-
-            return StatusCode(500);
-        }
+        return new JsonResult(new { result = "success" });
     }
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] PersonDto person)
     {
-        try
-        {
-            await _personRepository.Create(person);
+        await _personRepository.Create(person);
 
-            return new JsonResult(new { result = "success" });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex.Message);
-            
-            return StatusCode(500);
-        }
+        return new JsonResult(new { result = "success" });
     }
 
     [HttpPut("add_skill/{id}")]
