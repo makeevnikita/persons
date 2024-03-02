@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Skills.Repositories;
-using Skills.Exceptions;
 using Skills.Models.Dto;
 using Skills.Models;
 
@@ -12,14 +11,11 @@ namespace skill.Controllers;
 [Route("api/v1/persons")]
 public class PersonController : ControllerBase
 {
-    private readonly IPersonRepository _personRepository; 
-
-    private readonly ILogger<PersonController> _logger;
+    private readonly IPersonRepository _personRepository;
     
-    public PersonController(IPersonRepository PersonRepository, ILogger<PersonController> logger)
+    public PersonController(IPersonRepository PersonRepository)
     {
         _personRepository = PersonRepository;
-        _logger = logger;
     }
 
     [HttpGet("{id}")]
