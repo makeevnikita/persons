@@ -114,7 +114,7 @@ namespace Skills.IntegrationTests
         }
 
         [Test]
-        public async Task CreatePerson_SkillLevelLessThanZero_ShouldReturnBadRequest()
+        public async Task CreatePerson_SkillLevelLessThanOne_ShouldReturnBadRequest()
         {
             var person = new PersonDto
             {
