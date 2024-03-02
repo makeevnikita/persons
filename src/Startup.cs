@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Skills.Models;
 using Skills.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Skills.Validators;
 
 
 
@@ -17,6 +20,9 @@ namespace Skills
 
         public void ConfigureServices(IServiceCollection services)
         {   
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<SkillValidator>(ServiceLifetime.Transient);
+            
             services.AddTransient<IPersonRepository, PersonRepository>();
 
             string connectionString = Configuration.GetConnectionString("PostgresConnection");
