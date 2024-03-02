@@ -1,12 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Skills.Models;
 using Skills.Repositories;
-using Microsoft.Extensions;
-using Skills;
 
 
 
-namespace skills
+namespace Skills
 {
     public class Startup
     {

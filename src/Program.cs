@@ -1,4 +1,4 @@
-namespace skills
+namespace Skills
 {
     public class Program
     {
