@@ -14,8 +14,4 @@ public interface IPersonRepository
     public Task <PersonDto> GetById(long id);
 
     public Task Update(long id, PersonDto person);
-
-    public Task AddSkillToPerson(long id, Skill skill);
-
-    public Task RemoveSkillFromPerson(long id, string skillName);
 }

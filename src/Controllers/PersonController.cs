@@ -57,20 +57,4 @@ public class PersonController : ControllerBase
 
         return new JsonResult(new { result = "success" });
     }
-
-    [HttpPut("add_skill/{id}")]
-    public async Task<IActionResult> AddSkill([FromRoute] long id, [FromBody] Skill skill)
-    {
-        await _personRepository.AddSkillToPerson(id, skill);
-
-        return new JsonResult(new { result = "success" });
-    }
-
-    [HttpPut("remove_skill/{id}")]
-    public async Task<IActionResult> RemoveSkill([FromRoute] long id, [FromBody] string name)
-    {
-        await _personRepository.RemoveSkillFromPerson(id, name);
-
-        return new JsonResult(new { result = "success" });
-    }
 }

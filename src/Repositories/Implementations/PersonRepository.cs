@@ -101,6 +101,9 @@ public class PersonRepository : IPersonRepository
     /// <summary>
     /// Обновляет Name и DisplayName у Person
     /// Если Person с указанным id не найден, то возвращает NotFoundException
+    /// Добавляет скилл, если он отсутствует в БД, но есть в теле запроса
+    /// Удаляет скилл, если он присутствует в БД, но отсутствует в теле запроса
+    /// Изменяет уровень скила, если он присутствует в БД и в теле запроса
     /// </summary>
     /// <param name="id"></param>
     /// <param name="person"></param>
@@ -117,60 +120,26 @@ public class PersonRepository : IPersonRepository
 
         updatedPerson.Name = person.Name;
         updatedPerson.DisplayName = person.DisplayName;
+        
+        foreach (var skill in person.Skills)
+        {
+            var updatedSkill = updatedPerson.Skills.FirstOrDefault(w => w.Name == skill.Name);
+
+            if (updatedSkill == null)
+            {
+                updatedPerson.Skills.Add(skill);
+            }
+            else if (updatedSkill.Level != skill.Level)
+            {
+                updatedSkill.Level = skill.Level;
+            }
+        }
+
+        updatedPerson.Skills = updatedPerson.Skills.IntersectBy(
+            person.Skills.Select(p => p.Name), u => u.Name).ToList();
 
         _context.Person.Update(updatedPerson);
 
         await _context.SaveChangesAsync();
-    }
-
-    /// <summary>
-    /// Создаёт Skill у Person
-    /// Если Person с указанным id не найден, то возращает NotFoundException
-    /// Если у Person уже есть навык с указанным названием, то возвращает AlreadyExistsException
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="skill"></param>
-    /// <returns></returns>
-    /// <exception cref="NotFoundException"></exception>
-    /// <exception cref="AlreadyExistsException"></exception>
-    public async Task AddSkillToPerson(long id, Skill skill)
-    {
-        var person = await _context.Person.FirstOrDefaultAsync(w => w.Id == id);
-
-        if (person == null)
-        {
-            throw new NotFoundException($"Person with id {id} not found");
-        }
-
-        if (person.Skills.FirstOrDefault(w => w.Name == skill.Name) != null)
-        {
-            throw new AlreadyExistsException($"The character already has skill {skill.Name}");
-        }
-
-        person.Skills.Add(skill);
-        _context.Person.Update(person);
-        await _context.SaveChangesAsync(); 
-    }
-
-    /// <summary>
-    /// Удаляет Skill у Person
-    /// Если Person с указанным id не найден, то возвращает NotFoundException
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="skillName"></param>
-    /// <returns></returns>
-    /// <exception cref="NotFoundException"></exception>
-    public async Task RemoveSkillFromPerson(long id, string skillName)
-    {
-        var person = await _context.Person.FirstOrDefaultAsync(w => w.Id == id);
-
-        if (person == null)
-        {
-            throw new NotFoundException($"Person with id {id} not found");
-        }
-
-        person.Skills.RemoveAll(w => w.Name == skillName);
-        _context.Person.Update(person);
-        await _context.SaveChangesAsync(); 
     }
 }
